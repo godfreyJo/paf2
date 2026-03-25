@@ -20,7 +20,7 @@ def join(request):
     volunteer_form = VolunteerForm()
     donation_form = DonationItemForm()
     partnership_form = PartnershipForm()
-    
+
     if request.method == 'POST':
         print(f"\n{'='*60}")
         print(f"POST Request Received at {timezone.now()}")
@@ -30,12 +30,12 @@ def join(request):
 
         # Get the form type from the hidden field
         form_type = request.POST.get('form_type')
-        
+
         # Handle Volunteer Form
         if form_type == 'volunteer':
             print(">>> Processing Volunteer Form")
             volunteer_form = VolunteerForm(request.POST)
-            
+
             if volunteer_form.is_valid():
                 print("✓ Volunteer form is valid")
                 try:
@@ -45,19 +45,19 @@ def join(request):
                     print(f"  - Name: {volunteer.full_name}")
                     print(f"  - Email: {volunteer.email}")
                     print(f"  - Type: {volunteer.volunteer_type}")
-                    
+
                     # Track if any email was sent
                     email_sent = False
-                    
+
                     # Send confirmation email to volunteer
                     try:
                         print("Attempting to send confirmation email to volunteer...")
-                        
+
                         # Get display value for volunteer type
                         volunteer_type_display = dict(Volunteer.VOLUNTEER_TYPES).get(
                             volunteer.volunteer_type, volunteer.volunteer_type
                         )
-                        
+
                         subject = 'Thank you for volunteering with Phidelis Ann Foundation'
                         message = f"""Dear {volunteer.full_name},
 
@@ -90,11 +90,11 @@ Contact: {settings.CONTACT_EMAIL} | +254 759 707546
                         )
                         print(f"✓ Confirmation email sent to {volunteer.email}")
                         email_sent = True
-                        
+
                     except Exception as email_error:
                         print(f"✗ Error sending confirmation email: {email_error}")
                         print(traceback.format_exc())
-                    
+
                     # Send notification email to admin
                     try:
                         print("Attempting to send admin notification...")
@@ -102,7 +102,7 @@ Contact: {settings.CONTACT_EMAIL} | +254 759 707546
                         volunteer_type_display = dict(Volunteer.VOLUNTEER_TYPES).get(
                             volunteer.volunteer_type, volunteer.volunteer_type
                         )
-                        
+
                         admin_subject = f'New Volunteer Application: {volunteer.full_name}'
                         admin_message = f"""New volunteer application received!
 
@@ -129,15 +129,15 @@ Action Required: Please follow up with this volunteer within 2-3 business days.
                     except Exception as admin_error:
                         print(f"✗ Error sending admin notification: {admin_error}")
                         print(traceback.format_exc())
-                    
+
                     # Set success message based on email status
                     if email_sent:
                         messages.success(request, 'Thank you for volunteering! Check your email for confirmation.')
                     else:
                         messages.warning(request, 'Your application was saved successfully, but we could not send a confirmation email. We will contact you directly.')
-                    
+
                     return redirect('join')
-                    
+
                 except Exception as db_error:
                     print(f"✗ Database error: {db_error}")
                     print(traceback.format_exc())
@@ -148,12 +148,12 @@ Action Required: Please follow up with this volunteer within 2-3 business days.
                 for field, errors in volunteer_form.errors.items():
                     for error in errors:
                         messages.error(request, f'{field}: {error}')
-        
+
         # Handle Donation Form
         elif form_type == 'donation':
             print(">>> Processing Donation Form")
             donation_form = DonationItemForm(request.POST)
-            
+
             if donation_form.is_valid():
                 print("✓ Donation form is valid")
                 try:
@@ -163,17 +163,17 @@ Action Required: Please follow up with this volunteer within 2-3 business days.
                     print(f"  - Donor: {donation.donor_name}")
                     print(f"  - Email: {donation.donor_email}")
                     print(f"  - Category: {donation.item_category}")
-                    
+
                     email_sent = False
-                    
+
                     # Send confirmation to donor
                     try:
                         print("Attempting to send confirmation email to donor...")
-                        
+
                         category_display = dict(DonationItem.ITEM_CATEGORIES).get(
                             donation.item_category, donation.item_category
                         )
-                        
+
                         subject = 'Thank you for your donation - Phidelis Ann Foundation'
                         message = f"""Dear {donation.donor_name},
 
@@ -205,11 +205,11 @@ Contact: {settings.CONTACT_EMAIL} | +254 759 707546
                         )
                         print(f"✓ Confirmation email sent to {donation.donor_email}")
                         email_sent = True
-                        
+
                     except Exception as email_error:
                         print(f"✗ Error sending confirmation email: {email_error}")
                         print(traceback.format_exc())
-                    
+
                     # Send notification to admin
                     try:
                         print("Attempting to send admin notification...")
@@ -217,7 +217,7 @@ Contact: {settings.CONTACT_EMAIL} | +254 759 707546
                         category_display = dict(DonationItem.ITEM_CATEGORIES).get(
                             donation.item_category, donation.item_category
                         )
-                        
+
                         admin_subject = f'New Donation Offer: {donation.donor_name}'
                         admin_message = f"""New donation offer received!
 
@@ -242,14 +242,14 @@ Action Required: Please contact donor to arrange drop-off within 2-3 business da
                         print(f"✓ Admin notification sent to {admin_email}")
                     except Exception as admin_error:
                         print(f"✗ Error sending admin notification: {admin_error}")
-                    
+
                     if email_sent:
                         messages.success(request, 'Thank you for your donation! We will contact you soon.')
                     else:
                         messages.warning(request, 'Donation recorded, but we could not send confirmation email. We will contact you directly.')
-                    
+
                     return redirect('join')
-                    
+
                 except Exception as db_error:
                     print(f"✗ Database error: {db_error}")
                     print(traceback.format_exc())
@@ -260,12 +260,12 @@ Action Required: Please contact donor to arrange drop-off within 2-3 business da
                 for field, errors in donation_form.errors.items():
                     for error in errors:
                         messages.error(request, f'{field}: {error}')
-        
+
         # Handle Partnership Form
         elif form_type == 'partnership':
             print(">>> Processing Partnership Form")
             partnership_form = PartnershipForm(request.POST)
-            
+
             if partnership_form.is_valid():
                 print("✓ Partnership form is valid")
                 try:
@@ -275,17 +275,17 @@ Action Required: Please contact donor to arrange drop-off within 2-3 business da
                     print(f"  - Contact: {partnership.contact_person}")
                     print(f"  - Email: {partnership.email}")
                     print(f"  - Type: {partnership.partner_type}")
-                    
+
                     email_sent = False
-                    
+
                     # Send confirmation email
                     try:
                         print("Attempting to send confirmation email...")
-                        
+
                         partner_type_display = dict(Partnership.PARTNER_TYPES).get(
                             partnership.partner_type, partnership.partner_type
                         )
-                        
+
                         subject = 'Partnership Inquiry Received - Phidelis Ann Foundation'
                         message = f"""Dear {partnership.contact_person},
 
@@ -316,11 +316,11 @@ Contact: {settings.CONTACT_EMAIL} | +254 759 707546
                         )
                         print(f"✓ Confirmation email sent to {partnership.email}")
                         email_sent = True
-                        
+
                     except Exception as email_error:
                         print(f"✗ Error sending confirmation email: {email_error}")
                         print(traceback.format_exc())
-                    
+
                     # Send notification to admin
                     try:
                         print("Attempting to send admin notification...")
@@ -328,7 +328,7 @@ Contact: {settings.CONTACT_EMAIL} | +254 759 707546
                         partner_type_display = dict(Partnership.PARTNER_TYPES).get(
                             partnership.partner_type, partnership.partner_type
                         )
-                        
+
                         admin_subject = f'New Partnership Inquiry: {partnership.contact_person}'
                         admin_message = f"""New partnership inquiry received!
 
@@ -355,14 +355,14 @@ Action Required: Review proposal and respond within 3-5 business days.
                         print(f"✓ Admin notification sent to {admin_email}")
                     except Exception as admin_error:
                         print(f"✗ Error sending admin notification: {admin_error}")
-                    
+
                     if email_sent:
                         messages.success(request, 'Thank you for your partnership inquiry! We will contact you soon.')
                     else:
                         messages.warning(request, 'Inquiry saved, but we could not send confirmation email. We will contact you directly.')
-                    
+
                     return redirect('join')
-                    
+
                 except Exception as db_error:
                     print(f"✗ Database error: {db_error}")
                     print(traceback.format_exc())
@@ -376,7 +376,7 @@ Action Required: Review proposal and respond within 3-5 business days.
         else:
             print(f"⚠ Unknown form type: {form_type}")
             messages.error(request, 'Form submission error. Please try again.')
-    
+
     context = {
         'volunteer_form': volunteer_form,
         'donation_form': donation_form,
@@ -395,17 +395,17 @@ def contact(request):
                 print(f"✓ Contact saved to database - ID: {contact.id}")
                 print(f"  - Name: {contact.name}")
                 print(f"  - Email: {contact.email}")
-                
+
                 email_sent = False
-                
+
                 # Send auto-reply to user
                 try:
                     print("Attempting to send auto-reply...")
-                    
+
                     inquiry_type_display = dict(ContactMessage.INQUIRY_TYPES).get(
                         contact.inquiry_type, contact.inquiry_type
                     )
-                    
+
                     subject = 'We received your message - Phidelis Ann Foundation'
                     message = f"""Dear {contact.name},
 
@@ -435,11 +435,11 @@ Contact: {settings.CONTACT_EMAIL} | +254 759 707546
                     )
                     print(f"✓ Auto-reply sent to {contact.email}")
                     email_sent = True
-                    
+
                 except Exception as email_error:
                     print(f"✗ Error sending auto-reply: {email_error}")
                     print(traceback.format_exc())
-                
+
                 # Send notification to admin
                 try:
                     print("Attempting to send admin notification...")
@@ -447,7 +447,7 @@ Contact: {settings.CONTACT_EMAIL} | +254 759 707546
                     inquiry_type_display = dict(ContactMessage.INQUIRY_TYPES).get(
                         contact.inquiry_type, contact.inquiry_type
                     )
-                    
+
                     admin_subject = f'New Contact Form: {contact.subject}'
                     admin_message = f"""New message received from {contact.name}
 
@@ -475,14 +475,14 @@ Action Required: Please respond to this inquiry within 2-3 business days.
                     print(f"✓ Admin notification sent to {admin_email}")
                 except Exception as admin_error:
                     print(f"✗ Error sending admin notification: {admin_error}")
-                
+
                 if email_sent:
                     messages.success(request, 'Your message has been sent. We will get back to you soon!')
                 else:
                     messages.warning(request, 'Message saved, but we could not send confirmation. We will still respond to your inquiry.')
-                
+
                 return redirect('contact')
-                
+
             except Exception as db_error:
                 print(f"✗ Database error: {db_error}")
                 print(traceback.format_exc())
@@ -495,7 +495,7 @@ Action Required: Please respond to this inquiry within 2-3 business days.
                     messages.error(request, f'{field}: {error}')
     else:
         form = ContactForm()
-    
+
     context = {
         'form': form,
         'RECAPTCHA_PUBLIC_KEY': settings.RECAPTCHA_PUBLIC_KEY,
@@ -510,3 +510,22 @@ def events(request):
         return render(request, 'core/events.html', {'events': upcoming_events})
     except:
         return render(request, 'core/events.html', {'events': []})
+
+def debug(request):
+    from django.http import HttpResponse
+    import sys
+    import os
+
+    response = "<h1>Debug Info</h1>"
+    response += f"<p>Python path: {sys.path}</p>"
+    response += f"<p>Current directory: {os.getcwd()}</p>"
+    response += f"<p>Templates should be in: /home/aketch/paf2/PAF2/core/templates/core/</p>"
+
+    # Check if template exists
+    template_path = '/home/aketch/paf2/PAF2/core/templates/core/home.html'
+    if os.path.exists(template_path):
+        response += f"<p style='color:green'>✓ home.html exists at {template_path}</p>"
+    else:
+        response += f"<p style='color:red'>✗ home.html NOT found at {template_path}</p>"
+
+    return HttpResponse(response)

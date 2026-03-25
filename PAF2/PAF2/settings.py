@@ -3,7 +3,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 
-load_dotenv()
+load_dotenv('/home/aketch/paf2/.env')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,12 +25,7 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'  # For development
 #     # Use whitenoise or configure nginx/apache
 #     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-if DEBUG:
-    ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '::1']
-else:
-    # For production, read from environment variable
-    allowed_hosts_str = os.getenv('ALLOWED_HOSTS', '')
-    ALLOWED_HOSTS = allowed_hosts_str.split(',') if allowed_hosts_str else []
+ALLOWED_HOSTS = ['aketch.pythonanywhere.com', 'www.aketch.pythonanywhere.com', '127.0.0.1', 'localhost']
 
 # Application definition
 
@@ -83,13 +78,27 @@ WSGI_APPLICATION = "PAF2.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
+# if os.getenv('DB_NAME'):
 
+#     DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.mysql",
+#         "NAME": os.getenv("DB_NAME"),
+#         "USER": os.getenv("DB_USER"),
+#         "PASSWORD":os.getenv("DB_PASSWORD"),
+#         "HOST":os.getenv("DB_HOST"),
+#         "PORT":os.getenv("DB_POST", "3306"),
+#     }
+# }
+# else:
+DATABASES = {
+    'default':{
+        'ENGINE' : 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+        }
+
+
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -115,16 +124,22 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'
+
 TIME_ZONE = 'Africa/Nairobi'  # Based on your timezone
+
 USE_I18N = True
+
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
+
+STATIC_ROOT = '/home/aketch/paf2/PAF2/staticfiles'
+
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
-STATIC_ROOT = BASE_DIR / "staticfiles"
+
 
 # Media files (for future image uploads)
 MEDIA_URL = '/media/'
@@ -155,6 +170,9 @@ DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
 # EMAIL_USE_TLS = True
 # EMAIL_HOST_USER = 'apikey'
 # EMAIL_HOST_PASSWORD = 'your-sendgrid-api-key'
+
+# Site URL for production
+SITE_URL = os.getenv('SITE_URL', 'https://aketch.pythonanywhere.com')
 
 # Add reCAPTCHA settings
 RECAPTCHA_PUBLIC_KEY = os.getenv('RECAPTCHA_PUBLIC_KEY', '')
