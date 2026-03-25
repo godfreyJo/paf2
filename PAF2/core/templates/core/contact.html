@@ -1,0 +1,134 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Contact Us{% endblock %}
+
+{% block content %}
+<!-- Add reCAPTCHA script -->
+<script src="https://www.google.com/recaptcha/api.js?render={{ RECAPTCHA_PUBLIC_KEY }}"></script>
+<script>
+    // Execute reCAPTCHA on form submission
+    function onSubmit(token) {
+        document.getElementById("volunteer-form").submit();
+    }
+    
+    function onDonationSubmit(token) {
+        document.getElementById("donation-form").submit();
+    }
+    
+    function onPartnershipSubmit(token) {
+        document.getElementById("partnership-form").submit();
+    }
+    
+    function onContactSubmit(token) {
+        document.getElementById("contact-form").submit();
+    }
+</script>
+<section id="contact">
+    <div class="container">
+        <h2>Contact us</h2>
+
+        <div class="contact-row">
+            <!-- Contact Info (Static) -->
+            <div class="contact-info">
+                <div class="contact-detail">
+                    <i class="fas fa-phone-alt"></i>
+                    <span><strong>Call / text</strong> +254 759 707546</span>
+                </div>
+                <div class="contact-detail">
+                    <i class="fas fa-envelope"></i>
+                    <span><strong>Email</strong> info@phidelisannfoundation.org</span>
+                </div>
+                <div class="contact-detail">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span><strong>Outreach location</strong> Emalindi mixed secondary, Khwisero, Kakamega County</span>
+                </div>
+                <div class="whatsapp-info">
+                    <p><i class="fab fa-whatsapp" style="color: #25D366; font-size: 2rem;"></i>
+                    <strong>WhatsApp:</strong> +254 759 707546</p>
+                </div>
+
+                <!-- Quick Action Buttons -->
+                <a href="{% url 'join' %}" class="btn" style="margin-right: 1rem;">
+                    <i class="fas fa-calendar-check"></i> I'll volunteer
+                </a>
+                <a href="{% url 'join' %}" class="btn btn-outline">Donate now</a>
+
+                <!-- Contact Form -->
+                <div style="margin-top: 3rem; background: white; padding: 2rem; border-radius: 24px; box-shadow: var(--shadow);">
+                    <h4 style="color: var(--primary-dark); margin-bottom: 1.5rem;">
+                        <i class="fas fa-envelope" style="color: var(--accent-warm);"></i> Send us a Message
+                    </h4>
+
+                    <form method="post" action="{% url 'contact' %}">
+                        {% csrf_token %}
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">{{ form.name.label }}</label>
+                                {{ form.name }}
+                                {% if form.name.errors %}
+                                    <div class="text-danger">{{ form.name.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">{{ form.email.label }}</label>
+                                {{ form.email }}
+                                {% if form.email.errors %}
+                                    <div class="text-danger">{{ form.email.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">{{ form.phone.label }}</label>
+                                {{ form.phone }}
+                                {% if form.phone.errors %}
+                                    <div class="text-danger">{{ form.phone.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">{{ form.inquiry_type.label }}</label>
+                                {{ form.inquiry_type }}
+                                {% if form.inquiry_type.errors %}
+                                    <div class="text-danger">{{ form.inquiry_type.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">{{ form.subject.label }}</label>
+                            {{ form.subject }}
+                            {% if form.subject.errors %}
+                                <div class="text-danger">{{ form.subject.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">{{ form.message.label }}</label>
+                            {{ form.message }}
+                            {% if form.message.errors %}
+                                <div class="text-danger">{{ form.message.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <button type="submit" class="btn" style="width: 100%;">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Map Placeholder (Static) -->
+            <div class="map-placeholder">
+                <p>
+                    <i class="fas fa-map-marked-alt" style="font-size: 2.8rem; color: var(--primary-dark); margin-bottom: 0.5rem;"></i><br>
+                    Khwisero, Kakamega<br>
+                    Emalindi Mixed Secondary<br>
+                    <strong style="color: var(--primary-dark);">May 8th, 2026</strong>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

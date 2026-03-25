@@ -1,0 +1,48 @@
+# ============================================
+# PHIDELIS ANN FOUNDATION - REQUIREMENTS
+# Django Project Dependencies
+# ============================================
+
+# Core Framework
+Django>=4.2,<5.0                    # LTS version, stable and secure
+
+# Form Handling & UI
+django-crispy-forms>=2.0            # Better form rendering
+crispy-bootstrap5>=0.7              # Bootstrap 5 template pack for crispy
+
+# Environment Management (optional but recommended)
+python-dotenv>=1.0.0                # Load environment variables from .env file
+
+# Production Server (for deployment)
+gunicorn>=21.0.0                    # WSGI HTTP Server
+
+# Database (PostgreSQL - optional, for production)
+# psycopg2-binary>=2.9.0            # Uncomment if using PostgreSQL
+
+# Email Services (optional, for production)
+# sendgrid-django>=4.2.0            # Uncomment if using SendGrid
+# django-anymail>=10.0              # Uncomment for multiple email backends
+
+# Security & Performance
+django-csp>=3.7                     # Content Security Policy headers
+whitenoise>=6.5.0                   # Static file serving in production
+
+# Development & Testing (optional)
+# django-debug-toolbar>=4.0         # Uncomment for development debugging
+# pytest-django>=4.5.0              # Uncomment for testing
+# coverage>=7.0.0                   # Uncomment for test coverage
+
+# ============================================
+# INSTALLATION INSTRUCTIONS
+# ============================================
+# Development:
+#   pip install -r requirements.txt
+#
+# Production (minimal):
+#   pip install Django django-crispy-forms crispy-bootstrap5 gunicorn whitenoise python-dotenv
+#
+# After installation:
+#   python manage.py migrate
+#   python manage.py collectstatic
+#   python manage.py runserver
+# ============================================

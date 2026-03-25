@@ -1,0 +1,23 @@
+{% load static %}
+<header>
+    <div class="container header-flex">
+        <!-- LOGO -->
+        <div class="logo-area">
+            <img src="{% static 'core/images/logo.svg' %}" width="60">
+            <div class="logo-text">
+                Phidelis Ann Foundation
+                <span>Empower them today</span>
+            </div>
+        </div>
+
+        <!-- NAVIGATION -->
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}#home">Home</a></li>
+                <li><a href="{% url 'about' %}#about">About Us</a></li>
+                <li><a href="{% url 'join' %}#join">Get Involved</a></li>
+                <li><a href="{% url 'contact' %}">Contact us</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>

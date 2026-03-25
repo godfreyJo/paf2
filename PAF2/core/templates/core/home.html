@@ -1,0 +1,158 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<!-- HOME section -->
+<section id="home">
+    <div class="container hero">
+        <div class="hero-text">
+            <h1>Empower them today<br>for a stronger tomorrow</h1>
+            <p class="tagline">— Dignity. Education. Community.</p>
+            <a href="{% url 'join' %}" class="btn" style="margin-top: 2rem;">
+                <i class="fas fa-heart" style="margin-right: 8px;"></i> Become a volunteer
+            </a>
+        </div>
+
+        <!-- Core mission card -->
+        <div class="core-mission-card">
+            <h3>OUR CORE MISSION</h3>
+
+            <div class="mission-item">
+                <i class="fas fa-graduation-cap"></i>
+                <p>Education Access</p>
+            </div>
+            <div class="mission-desc">textbooks, stationery, uniforms — removing learning barriers</div>
+
+            <div class="mission-item">
+                <i class="fas fa-female"></i>
+                <p>Girl Child Support</p>
+            </div>
+            <div class="mission-desc">sanitary pads, mentorship, dignity for girls to stay in school</div>
+
+            <div class="mission-item">
+                <i class="fas fa-hands-helping"></i>
+                <p>Community Outreach</p>
+            </div>
+            <div class="mission-desc">direct events, volunteer drives, local partnerships in Kakamega</div>
+
+            <div class="mission-item">
+                <i class="fas fa-soap"></i>
+                <p>Health & Hygiene</p>
+            </div>
+            <div class="mission-desc">undergarments, hygiene education, personal care essentials</div>
+        </div>
+    </div>
+</section>
+
+<!-- ABOUT US section - Enhanced with Mission, Vision, and Approach -->
+<section id="about">
+    <div class="container">
+        <h2>About Us</h2>
+        <p class="about-intro">Phidelis Ann Foundation (PAF) is a community-driven organization committed to improving access to education and restoring dignity among learners in underserved communities across Kenya. We believe that every child deserves a fair chance to learn, grow, and achieve their full potential—regardless of their background.</p>
+
+        <!-- Mission and Vision Grid -->
+        <div class="mission-vision-grid">
+            <div class="mission-card">
+                <h3>Our Mission</h3>
+                <p>To empower children and youth by providing essential educational and personal support, enabling them to stay in school, learn effectively, and thrive with dignity.</p>
+            </div>
+            <div class="vision-card">
+                <h3>Our Vision</h3>
+                <p>A society where no child is held back from education due to lack of basic needs, and where every learner is equipped with the tools and confidence to build a brighter future.</p>
+            </div>
+        </div>
+
+        <!-- Why Our Work Matters -->
+        <div class="why-work-matters">
+            <h3>Why Our Work Matters</h3>
+            <p>In many parts of Kenya, students miss school not because they lack ability, but because they lack basic necessities. Something as simple as a school uniform or sanitary pad can determine whether a child attends class or stays at home. At Phidelis Ann Foundation, we are committed to closing this gap—one child, one school, and one community at a time.</p>
+        </div>
+
+        <!-- Our Approach -->
+        <div class="approach-section">
+            <h3>Our Approach</h3>
+            <div class="approach-grid">
+                <div class="approach-item">
+                    <h4><i class="fas fa-hand-holding-heart"></i> Dignity-first support</h4>
+                    <p>Every child deserves respect and confidence. We ensure that our support maintains and uplifts the dignity of every learner we serve.</p>
+                </div>
+                <div class="approach-item">
+                    <h4><i class="fas fa-users"></i> Community involvement</h4>
+                    <p>Working with local leaders, schools, and families to ensure our interventions are relevant, accepted, and sustainable.</p>
+                </div>
+                <div class="approach-item">
+                    <h4><i class="fas fa-seedling"></i> Sustainable impact</h4>
+                    <p>Creating long-term change, not just short-term aid. We focus on solutions that continue to benefit communities for years to come.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- What We Do Grid -->
+        <h3 style="margin: 3rem 0 1.5rem;">What We Do</h3>
+        <div class="about-grid">
+            <div class="about-item">
+                <h4><i class="fas fa-book-open" style="color: #c79a5e; margin-right: 8px;"></i> Educational materials</h4>
+                <p>Textbooks and stationery so every student can fully participate in learning.</p>
+            </div>
+            <div class="about-item">
+                <h4><i class="fas fa-tshirt" style="color: #c79a5e; margin-right: 8px;"></i> School essentials</h4>
+                <p>Durable uniforms and shoes to promote equality and confidence in school.</p>
+            </div>
+            <div class="about-item">
+                <h4><i class="fas fa-hand-holding-water" style="color: #c79a5e; margin-right: 8px;"></i> Health & hygiene</h4>
+                <p>Sanitary pads to reduce absenteeism, plus undergarments for personal dignity.</p>
+            </div>
+        </div>
+
+        <!-- Upcoming Outreach Banner -->
+        <div style="margin-top: 3.5rem; background: linear-gradient(135deg, #e7dfd0, #dfd4c2); padding: 2rem; border-radius: 32px; display: flex; flex-wrap: wrap; gap: 2rem; align-items: center;">
+            <div style="flex:2">
+                <h3 style="color: var(--primary-dark); font-size: 2.2rem; margin-bottom: 0.5rem;">📍 Upcoming outreach</h3>
+                <p style="font-size: 1.3rem; font-family: 'Inter', sans-serif;"><strong>Emalindi Mixed Secondary</strong>, Khwisero, Kakamega County</p>
+                <p style="font-size: 1.1rem; font-family: 'Inter', sans-serif;"><i class="far fa-calendar-alt" style="color: #c79a5e;"></i> Friday, May 8th, 2026 &nbsp; | &nbsp; <i class="far fa-clock"></i> 8:00 AM – 11:00 AM</p>
+            </div>
+            <div style="flex:1; background: var(--primary-dark); color: #f2e6d5; border-radius: 24px; padding: 1.5rem; text-align: center; border: 2px solid var(--accent-warm);">
+                <i class="fas fa-map-pin" style="font-size: 2.5rem; color: var(--accent-warm);"></i>
+                <p style="font-family: 'Inter', sans-serif; font-weight: 500;">Be there • volunteer • donate</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- GET INVOLVED section - THIS IS THE MISSING SECTION -->
+<section id="join">
+    <div class="container">
+        <h2>Get Involved</h2>
+        <div class="join-steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <i class="fas fa-hand-holding-heart" style="font-size: 2.5rem; color: #c79a5e;"></i>
+                <h3>Volunteer</h3>
+                <p>Come to Khwisero on May 8th, or help us sort and pack items before the event.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <i class="fas fa-gift" style="font-size: 2.5rem; color: #c79a5e;"></i>
+                <h3>Donate items</h3>
+                <p>Sanitary pads, uniforms, stationery, shoes, undergarments – every piece counts.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <i class="fas fa-handshake" style="font-size: 2.5rem; color: #c79a5e;"></i>
+                <h3>Partner with us</h3>
+                <p>Organizations or individuals – contact us to sponsor a child or a school kit.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <i class="fas fa-phone-alt" style="font-size: 2.5rem; color: #c79a5e;"></i>
+                <h3>Call / text</h3>
+                <p>Reach +254 759 707546 for enquiries or to arrange donation drop-off.</p>
+            </div>
+        </div>
+        <div style="margin-top: 3rem; background: #fff; border-radius: 48px; padding: 2rem; box-shadow: var(--shadow); border: 1px solid #e7ddcd;">
+            <p style="font-size: 1.4rem; font-family: 'Playfair Display', serif; font-style: italic; color: var(--primary-dark);"><i class="fas fa-quote-left" style="color: #c79a5e; margin-right: 0.5rem;"></i> Every contribution, big or small, strengthens a child's opportunity to learn, grow, and succeed. <i class="fas fa-quote-right" style="color: #c79a5e; margin-left: 0.5rem;"></i></p>
+        </div>
+    </div>
+</section>
+{% endblock %}
