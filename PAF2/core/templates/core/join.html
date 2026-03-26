@@ -6,18 +6,85 @@
 {% if not debug %}
 <script src="https://www.google.com/recaptcha/api.js?render={{ RECAPTCHA_PUBLIC_KEY }}"></script>
 <script>
-    // Execute reCAPTCHA on form submission
-    function onSubmit(token) {
-        document.getElementById("volunteer-form").submit();
+    // Improved reCAPTCHA handling
+    function handleFormSubmit(formId, actionName) {
+        console.log("Handling form submission for: " + formId);
+        
+        // Get the form element
+        var form = document.getElementById(formId);
+        if (!form) {
+            console.error("Form not found: " + formId);
+            return false;
+        }
+        
+        // Prevent default submission
+        event.preventDefault();
+        
+        // Execute reCAPTCHA and submit
+        grecaptcha.ready(function() {
+            grecaptcha.execute('{{ RECAPTCHA_PUBLIC_KEY }}', {action: actionName}).then(function(token) {
+                console.log("reCAPTCHA token received for: " + actionName);
+                
+                // Check if the hidden field already exists
+                var existingInput = form.querySelector('input[name="g_recaptcha_response"]');
+                if (existingInput) {
+                    existingInput.value = token;
+                } else {
+                    // Add the token to the form
+                    var hiddenInput = document.createElement('input');
+                    hiddenInput.type = 'hidden';
+                    hiddenInput.name = 'g_recaptcha_response';
+                    hiddenInput.value = token;
+                    form.appendChild(hiddenInput);
+                    console.log("Created new hidden field with token");
+                }
+                
+                // Submit the form
+                form.submit();
+            });
+        });
+        
+        return false;
     }
     
-    function onDonationSubmit(token) {
-        document.getElementById("donation-form").submit();
-    }
-    
-    function onPartnershipSubmit(token) {
-        document.getElementById("partnership-form").submit();
-    }
+    // Set up form submit handlers when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        // Volunteer form
+        var volunteerForm = document.getElementById('volunteer-form');
+        if (volunteerForm) {
+            volunteerForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleFormSubmit('volunteer-form', 'volunteer_submit');
+            });
+        }
+        
+        // Donation form
+        var donationForm = document.getElementById('donation-form');
+        if (donationForm) {
+            donationForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleFormSubmit('donation-form', 'donation_submit');
+            });
+        }
+        
+        // Partnership form
+        var partnershipForm = document.getElementById('partnership-form');
+        if (partnershipForm) {
+            partnershipForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleFormSubmit('partnership-form', 'partnership_submit');
+            });
+        }
+        
+        // Contact form
+        var contactForm = document.getElementById('contact-form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleFormSubmit('contact-form', 'contact_submit');
+            });
+        }
+    });
 </script>
 {% endif %}
 
@@ -118,22 +185,13 @@
 
                     <!-- reCAPTCHA - only in production -->
                     {% if not debug %}
-                        {{ volunteer_form.captcha }}
+                        <!-- {{ volunteer_form.captcha }} -->
                     {% endif %}
 
-                    <!-- Submit Button - conditional for reCAPTCHA -->
-                    {% if not debug %}
-                        <button type="submit" class="btn g-recaptcha" 
-                                data-sitekey="{{ RECAPTCHA_PUBLIC_KEY }}" 
-                                data-callback="onSubmit" 
-                                data-action="submit">
-                            <i class="fas fa-paper-plane"></i> Submit Volunteer Application
-                        </button>
-                    {% else %}
-                        <button type="submit" class="btn">
-                            <i class="fas fa-paper-plane"></i> Submit Volunteer Application
-                        </button>
-                    {% endif %}
+                    <!-- Submit Button - regular button (JS handles reCAPTCHA) -->
+                    <button type="submit" class="btn">
+                        <i class="fas fa-paper-plane"></i> Submit Volunteer Application
+                    </button>
                 </form>
             </div>
 
@@ -201,19 +259,9 @@
                         {{ donation_form.captcha }}
                     {% endif %}
 
-                    <!-- Submit Button - conditional for reCAPTCHA -->
-                    {% if not debug %}
-                        <button type="submit" class="btn g-recaptcha" 
-                                data-sitekey="{{ RECAPTCHA_PUBLIC_KEY }}" 
-                                data-callback="onDonationSubmit" 
-                                data-action="submit">
-                            <i class="fas fa-heart"></i> Submit Donation Offer
-                        </button>
-                    {% else %}
-                        <button type="submit" class="btn">
-                            <i class="fas fa-heart"></i> Submit Donation Offer
-                        </button>
-                    {% endif %}
+                    <button type="submit" class="btn">
+                        <i class="fas fa-heart"></i> Submit Donation Offer
+                    </button>
                 </form>
             </div>
 
@@ -281,19 +329,9 @@
                         {{ partnership_form.captcha }}
                     {% endif %}
 
-                    <!-- Submit Button - conditional for reCAPTCHA -->
-                    {% if not debug %}
-                        <button type="submit" class="btn g-recaptcha" 
-                                data-sitekey="{{ RECAPTCHA_PUBLIC_KEY }}" 
-                                data-callback="onPartnershipSubmit" 
-                                data-action="submit">
-                            <i class="fas fa-paper-plane"></i> Submit Partnership Inquiry
-                        </button>
-                    {% else %}
-                        <button type="submit" class="btn">
-                            <i class="fas fa-paper-plane"></i> Submit Partnership Inquiry
-                        </button>
-                    {% endif %}
+                    <button type="submit" class="btn">
+                        <i class="fas fa-paper-plane"></i> Submit Partnership Inquiry
+                    </button>
                 </form>
             </div>
         </div>

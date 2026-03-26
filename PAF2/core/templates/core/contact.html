@@ -6,9 +6,40 @@
 {% if not debug %}
 <script src="https://www.google.com/recaptcha/api.js?render={{ RECAPTCHA_PUBLIC_KEY }}"></script>
 <script>
-    function onContactSubmit(token) {
-        document.getElementById("contact-form").submit();
+    function handleContactSubmit() {
+        var form = document.getElementById('contact-form');
+        if (!form) return false;
+        
+        event.preventDefault();
+        
+        grecaptcha.ready(function() {
+            grecaptcha.execute('{{ RECAPTCHA_PUBLIC_KEY }}', {action: 'contact_submit'}).then(function(token) {
+                var existingInput = form.querySelector('input[name="g_recaptcha_response"]');
+                if (existingInput) {
+                    existingInput.value = token;
+                } else {
+                    var hiddenInput = document.createElement('input');
+                    hiddenInput.type = 'hidden';
+                    hiddenInput.name = 'g_recaptcha_response';
+                    hiddenInput.value = token;
+                    form.appendChild(hiddenInput);
+                }
+                form.submit();
+            });
+        });
+        
+        return false;
     }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        var contactForm = document.getElementById('contact-form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleContactSubmit();
+            });
+        }
+    });
 </script>
 {% endif %}
 
@@ -106,19 +137,9 @@
                             {{ form.captcha }}
                         {% endif %}
 
-                        <!-- Submit Button - conditional for reCAPTCHA -->
-                        {% if not debug %}
-                            <button type="submit" class="btn g-recaptcha" 
-                                    data-sitekey="{{ RECAPTCHA_PUBLIC_KEY }}" 
-                                    data-callback="onContactSubmit" 
-                                    data-action="submit" style="width: 100%;">
-                                <i class="fas fa-paper-plane"></i> Send Message
-                            </button>
-                        {% else %}
-                            <button type="submit" class="btn" style="width: 100%;">
-                                <i class="fas fa-paper-plane"></i> Send Message
-                            </button>
-                        {% endif %}
+                        <button type="submit" class="btn" style="width: 100%;">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
                     </form>
                 </div>
             </div>

@@ -1,22 +1,8 @@
 from django import forms
-from django.core.validators import RegexValidator
 from django.conf import settings
 from .models import Volunteer, DonationItem, Partnership, ContactMessage
 import re
-
-# conditional import for reCAPTCHA based on the library used
-
-if not settings.DEBUG:
-    from django_recaptcha.fields import ReCaptchaField
-    from django_recaptcha.widgets import ReCaptchaV3
-else:
-    # class to mock reCAPTCHA in development (always valid)
-    class ReCaptchaField(forms.Field):
-        def __init__(self, *args, **kwargs):
-            kwargs['required'] = False  # Make it optional in development
-            super().__init__(*args, **kwargs)
-        def validate(self, value):
-            return True  # Always pass validation in development            
+import requests
 
 class BaseForm(forms.ModelForm):
     """Base form with common functionality"""
@@ -25,30 +11,62 @@ class BaseForm(forms.ModelForm):
         widget=forms.TextInput(attrs={'style': 'display:none', 'tabindex': '-1', 'autocomplete': 'off'})
     )
     
-    # only add captcha in production to avoid issues during development
-    if not settings.DEBUG:
-        captcha = ReCaptchaField(
-            widget=ReCaptchaV3,
-            label='',
-            required=True,
-    )    
+    # Field to receive the reCAPTCHA token from JavaScript
+    g_recaptcha_response = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput(),
+        label=''
+    )
+    
     def clean_honeypot(self):
         honeypot = self.cleaned_data.get('honeypot')
         if honeypot:
             raise forms.ValidationError('Spam detected. Please leave this field empty.')
         return honeypot
     
-    def clean_captcha(self):
-        """reCAPTCHA validation is handled by the field itself"""
+    def clean(self):
+        """Handle reCAPTCHA validation"""
+        cleaned_data = super().clean()
+        
+        # Only validate in production
         if not settings.DEBUG:
-            captcha = self.cleaned_data.get('captcha')
-            if not captcha:
-                raise forms.ValidationError('Please complete the verification.')
-            return captcha
-        return 'dev-mode-pass'  # In development, we bypass captcha validation
-    
-    
-     
+            # Check if we have a token from JavaScript
+            recaptcha_token = cleaned_data.get('g_recaptcha_response')
+            
+            if not recaptcha_token:
+                raise forms.ValidationError('Please complete the reCAPTCHA verification.')
+            
+            # Verify the token with Google
+            try:
+                response = requests.post(
+                    'https://www.google.com/recaptcha/api/siteverify',
+                    data={
+                        'secret': settings.RECAPTCHA_PRIVATE_KEY,
+                        'response': recaptcha_token,
+                    },
+                    timeout=10
+                )
+                result = response.json()
+                
+                if not result.get('success'):
+                    print(f"reCAPTCHA verification failed: {result}")
+                    raise forms.ValidationError('Error verifying reCAPTCHA, please try again.')
+                
+                # Optional: Check score (for v3)
+                score = result.get('score', 0)
+                if score < 0.5:  # Adjust threshold as needed
+                    raise forms.ValidationError('Suspicious activity detected. Please try again.')
+                
+                print(f"reCAPTCHA verification successful! Score: {score}")
+                
+            except requests.exceptions.RequestException as e:
+                print(f"reCAPTCHA network error: {e}")
+                raise forms.ValidationError('Unable to verify reCAPTCHA. Please check your connection and try again.')
+            except Exception as e:
+                print(f"reCAPTCHA verification error: {e}")
+                raise forms.ValidationError('Error verifying reCAPTCHA. Please try again.')
+        
+        return cleaned_data
 
 class VolunteerForm(BaseForm):
     """Enhanced Volunteer Form with database storage and bot protection"""
@@ -91,7 +109,6 @@ class VolunteerForm(BaseForm):
         if not re.match(r'^\+?[\d\s-]{10,}$', phone):
             raise forms.ValidationError('Enter a valid phone number (minimum 10 digits)')
         return phone
-
 
 class DonationItemForm(BaseForm):
     """Enhanced Donation Form with database storage and bot protection"""
@@ -140,7 +157,6 @@ class DonationItemForm(BaseForm):
             raise forms.ValidationError('Enter a valid phone number')
         return phone
 
-
 class PartnershipForm(BaseForm):
     """Enhanced Partnership Form with database storage and bot protection"""
     
@@ -187,7 +203,6 @@ class PartnershipForm(BaseForm):
         if not re.match(r'^\+?[\d\s-]{10,}$', phone):
             raise forms.ValidationError('Enter a valid phone number')
         return phone
-
 
 class ContactForm(BaseForm):
     """Enhanced Contact Form with database storage and bot protection"""
