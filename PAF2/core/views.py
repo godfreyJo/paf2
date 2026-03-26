@@ -381,7 +381,8 @@ Action Required: Review proposal and respond within 3-5 business days.
         'volunteer_form': volunteer_form,
         'donation_form': donation_form,
         'partnership_form': partnership_form,
-        'RECAPTCHA_PUBLIC_KEY': settings.RECAPTCHA_PUBLIC_KEY,
+        'RECAPTCHA_PUBLIC_KEY': getattr(settings, 'RECAPTCHA_PUBLIC_KEY', ''),
+        'debug': settings.DEBUG,
     }
     return render(request, 'core/join.html', context)
 
@@ -498,7 +499,8 @@ Action Required: Please respond to this inquiry within 2-3 business days.
     
     context = {
         'form': form,
-        'RECAPTCHA_PUBLIC_KEY': settings.RECAPTCHA_PUBLIC_KEY,
+        'RECAPTCHA_PUBLIC_KEY': getattr(settings, 'RECAPTCHA_PUBLIC_KEY', ''),
+        'debug': settings.DEBUG,
     }
     return render(request, 'core/contact.html', context)
 

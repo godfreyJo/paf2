@@ -161,6 +161,10 @@ RECAPTCHA_PUBLIC_KEY = os.getenv('RECAPTCHA_PUBLIC_KEY', '')
 RECAPTCHA_PRIVATE_KEY = os.getenv('RECAPTCHA_PRIVATE_KEY', '')
 RECAPTCHA_REQUIRED_SCORE = 0.85  # Adjust as needed (0.0 to 1.0, higher = stricter)
 
+if DEBUG:
+    SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
+    
+
 # Messages
 from django.contrib.messages import constants as messages
 MESSAGE_TAGS = {

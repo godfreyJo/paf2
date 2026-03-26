@@ -1,11 +1,22 @@
 from django import forms
 from django.core.validators import RegexValidator
-from django_recaptcha.fields import ReCaptchaField  # <-- Update import
-from django_recaptcha.widgets import ReCaptchaV2Checkbox, ReCaptchaV3
-# from captcha.fields import ReCaptchaField
-# from captcha.widgets import ReCaptchaV3
+from django.conf import settings
 from .models import Volunteer, DonationItem, Partnership, ContactMessage
 import re
+
+# conditional import for reCAPTCHA based on the library used
+
+if not settings.DEBUG:
+    from django_recaptcha.fields import ReCaptchaField
+    from django_recaptcha.widgets import ReCaptchaV3
+else:
+    # class to mock reCAPTCHA in development (always valid)
+    class ReCaptchaField(forms.Field):
+        def __init__(self, *args, **kwargs):
+            kwargs['required'] = False  # Make it optional in development
+            super().__init__(*args, **kwargs)
+        def validate(self, value):
+            return True  # Always pass validation in development            
 
 class BaseForm(forms.ModelForm):
     """Base form with common functionality"""
@@ -14,12 +25,13 @@ class BaseForm(forms.ModelForm):
         widget=forms.TextInput(attrs={'style': 'display:none', 'tabindex': '-1', 'autocomplete': 'off'})
     )
     
-    captcha = ReCaptchaField(
-        widget=ReCaptchaV3,
-        label='',
-        required=True,
-    )
-    
+    # only add captcha in production to avoid issues during development
+    if not settings.DEBUG:
+        captcha = ReCaptchaField(
+            widget=ReCaptchaV3,
+            label='',
+            required=True,
+    )    
     def clean_honeypot(self):
         honeypot = self.cleaned_data.get('honeypot')
         if honeypot:
@@ -28,10 +40,15 @@ class BaseForm(forms.ModelForm):
     
     def clean_captcha(self):
         """reCAPTCHA validation is handled by the field itself"""
-        if not self.cleaned_data.get('captcha'):
-            raise forms.ValidationError('Please complete the verification.')
-        return self.cleaned_data.get('captcha')
-
+        if not settings.DEBUG:
+            captcha = self.cleaned_data.get('captcha')
+            if not captcha:
+                raise forms.ValidationError('Please complete the verification.')
+            return captcha
+        return 'dev-mode-pass'  # In development, we bypass captcha validation
+    
+    
+     
 
 class VolunteerForm(BaseForm):
     """Enhanced Volunteer Form with database storage and bot protection"""

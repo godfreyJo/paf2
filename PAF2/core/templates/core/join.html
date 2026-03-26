@@ -3,7 +3,7 @@
 {% block title %}Get Involved{% endblock %}
 
 {% block content %}
-<!-- Add reCAPTCHA script -->
+{% if not debug %}
 <script src="https://www.google.com/recaptcha/api.js?render={{ RECAPTCHA_PUBLIC_KEY }}"></script>
 <script>
     // Execute reCAPTCHA on form submission
@@ -19,6 +19,7 @@
         document.getElementById("partnership-form").submit();
     }
 </script>
+{% endif %}
 
 <section id="join">
     <div class="container">
@@ -115,14 +116,24 @@
                         {% endif %}
                     </div>
 
-                    {{ volunteer_form.captcha }}
+                    <!-- reCAPTCHA - only in production -->
+                    {% if not debug %}
+                        {{ volunteer_form.captcha }}
+                    {% endif %}
 
-                    <button type="submit" class="btn g-recaptcha" 
-                            data-sitekey="{{ RECAPTCHA_PUBLIC_KEY }}" 
-                            data-callback="onSubmit" 
-                            data-action="submit">
-                        <i class="fas fa-paper-plane"></i> Submit Volunteer Application
-                    </button>
+                    <!-- Submit Button - conditional for reCAPTCHA -->
+                    {% if not debug %}
+                        <button type="submit" class="btn g-recaptcha" 
+                                data-sitekey="{{ RECAPTCHA_PUBLIC_KEY }}" 
+                                data-callback="onSubmit" 
+                                data-action="submit">
+                            <i class="fas fa-paper-plane"></i> Submit Volunteer Application
+                        </button>
+                    {% else %}
+                        <button type="submit" class="btn">
+                            <i class="fas fa-paper-plane"></i> Submit Volunteer Application
+                        </button>
+                    {% endif %}
                 </form>
             </div>
 
@@ -185,14 +196,24 @@
                         {% endif %}
                     </div>
 
-                    {{ donation_form.captcha }}
+                    <!-- reCAPTCHA - only in production -->
+                    {% if not debug %}
+                        {{ donation_form.captcha }}
+                    {% endif %}
 
-                    <button type="submit" class="btn g-recaptcha" 
-                            data-sitekey="{{ RECAPTCHA_PUBLIC_KEY }}" 
-                            data-callback="onDonationSubmit" 
-                            data-action="submit">
-                        <i class="fas fa-heart"></i> Submit Donation Offer
-                    </button>
+                    <!-- Submit Button - conditional for reCAPTCHA -->
+                    {% if not debug %}
+                        <button type="submit" class="btn g-recaptcha" 
+                                data-sitekey="{{ RECAPTCHA_PUBLIC_KEY }}" 
+                                data-callback="onDonationSubmit" 
+                                data-action="submit">
+                            <i class="fas fa-heart"></i> Submit Donation Offer
+                        </button>
+                    {% else %}
+                        <button type="submit" class="btn">
+                            <i class="fas fa-heart"></i> Submit Donation Offer
+                        </button>
+                    {% endif %}
                 </form>
             </div>
 
@@ -255,14 +276,24 @@
                         {% endif %}
                     </div>
 
-                    {{ partnership_form.captcha }}
+                    <!-- reCAPTCHA - only in production -->
+                    {% if not debug %}
+                        {{ partnership_form.captcha }}
+                    {% endif %}
 
-                    <button type="submit" class="btn g-recaptcha" 
-                            data-sitekey="{{ RECAPTCHA_PUBLIC_KEY }}" 
-                            data-callback="onPartnershipSubmit" 
-                            data-action="submit">
-                        <i class="fas fa-paper-plane"></i> Submit Partnership Inquiry
-                    </button>
+                    <!-- Submit Button - conditional for reCAPTCHA -->
+                    {% if not debug %}
+                        <button type="submit" class="btn g-recaptcha" 
+                                data-sitekey="{{ RECAPTCHA_PUBLIC_KEY }}" 
+                                data-callback="onPartnershipSubmit" 
+                                data-action="submit">
+                            <i class="fas fa-paper-plane"></i> Submit Partnership Inquiry
+                        </button>
+                    {% else %}
+                        <button type="submit" class="btn">
+                            <i class="fas fa-paper-plane"></i> Submit Partnership Inquiry
+                        </button>
+                    {% endif %}
                 </form>
             </div>
         </div>
