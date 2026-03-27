@@ -1,0 +1,347 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block extra_head %}
+<!-- reCAPTCHA v3 Script -->
+<script src="https://www.google.com/recaptcha/api.js?render={{ RECAPTCHA_PUBLIC_KEY }}"></script>
+{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="relative py-32 bg-paf-green">
+    <div class="absolute inset-0 opacity-20">
+        <img src="{% static 'main/images/children_playing.jpg' %}" alt="Background" class="w-full h-full object-cover">
+    </div>
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-5xl md:text-6xl font-serif font-bold text-white mb-4">Contact Us</h1>
+        <p class="text-white/80 text-lg max-w-2xl mx-auto">Get in touch with us to learn more about our work or how you can help.</p>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="py-20 bg-paf-cream">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-12">
+            <!-- Contact Form -->
+            <div class="bg-white rounded-2xl shadow-lg p-8 md:p-12">
+                <h2 class="text-3xl font-serif font-bold text-paf-green mb-6">Send Us a Message</h2>
+                
+                <!-- Messages Container - Right above the form -->
+                <div id="form-messages" class="mb-6">
+                    {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert-message" style="padding: 1rem; border-radius: 8px; margin-bottom: 1rem;
+                                    background-color: {% if message.tags == 'success' %}#d4edda{% elif message.tags == 'error' or message.tags == 'danger' %}#f8d7da{% elif message.tags == 'warning' %}#fff3cd{% else %}#d1ecf1{% endif %};
+                                    color: {% if message.tags == 'success' %}#155724{% elif message.tags == 'error' or message.tags == 'danger' %}#721c24{% elif message.tags == 'warning' %}#856404{% else %}#0c5460{% endif %};
+                                    border-left: 4px solid {% if message.tags == 'success' %}#28a745{% elif message.tags == 'error' or message.tags == 'danger' %}#dc3545{% elif message.tags == 'warning' %}#ffc107{% else %}#17a2b8{% endif %};
+                                    font-weight: 500;">
+                            <div class="flex justify-between items-center">
+                                <span>{{ message }}</span>
+                                <button onclick="this.parentElement.parentElement.style.display='none'" 
+                                        style="background: none; border: none; font-size: 1.2rem; cursor: pointer; color: inherit;">&times;</button>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                
+                <form method="post" action="{% url 'contact' %}" id="contact-form" autocomplete="off">
+                    {% csrf_token %}
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-paf-green font-medium mb-2">First Name</label>
+                            {{ form.first_name }}
+                            {% if form.first_name.errors %}
+                                <p class="text-red-500 text-sm mt-1">{{ form.first_name.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <label class="block text-paf-green font-medium mb-2">Last Name</label>
+                            {{ form.last_name }}
+                            {% if form.last_name.errors %}
+                                <p class="text-red-500 text-sm mt-1">{{ form.last_name.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <label class="block text-paf-green font-medium mb-2">Email</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <p class="text-red-500 text-sm mt-1">{{ form.email.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="mt-4">
+                        <label class="block text-paf-green font-medium mb-2">Subject</label>
+                        {{ form.subject }}
+                        {% if form.subject.errors %}
+                            <p class="text-red-500 text-sm mt-1">{{ form.subject.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="mt-4">
+                        <label class="block text-paf-green font-medium mb-2">Message</label>
+                        {{ form.message }}
+                        {% if form.message.errors %}
+                            <p class="text-red-500 text-sm mt-1">{{ form.message.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- reCAPTCHA field (invisible) - THIS IS THE KEY ADDITION -->
+                    {{ form.captcha }}
+                    
+                    <div class="mt-6">
+                        <button type="submit" id="submit-button" 
+                                class="w-full bg-paf-green hover:bg-paf-green/90 text-white font-semibold py-4 rounded-lg transition-all duration-300 relative overflow-hidden">
+                            <span id="button-text" class="flex items-center justify-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                                </svg>
+                                Send Message
+                            </span>
+                            <span id="button-loader" class="absolute inset-0 flex items-center justify-center gap-2 hidden bg-paf-green/90">
+                                <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                <span>Sending...</span>
+                            </span>
+                        </button>
+                    </div>
+                </form>
+                
+                <!-- reCAPTCHA Privacy Notice - ADD THIS -->
+                <p class="text-xs text-paf-green/50 mt-4 text-center">
+                    This site is protected by reCAPTCHA and the Google 
+                    <a href="https://policies.google.com/privacy" target="_blank" class="underline hover:text-paf-gold">Privacy Policy</a> and 
+                    <a href="https://policies.google.com/terms" target="_blank" class="underline hover:text-paf-gold">Terms of Service</a> apply.
+                </p>
+            </div>
+            
+            <!-- Contact Info -->
+            <div class="space-y-8">
+                <div>
+                    <h2 class="text-3xl font-serif font-bold text-paf-green mb-6">Get in Touch</h2>
+                    <p class="text-paf-green/70 leading-relaxed">
+                        We'd love to hear from you. Whether you have questions about our programs, want to volunteer, or are interested in partnering with us, reach out and we'll get back to you as soon as possible.
+                    </p>
+                </div>
+                
+                <div class="space-y-6">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-lg bg-paf-gold/20 flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="map-pin" class="w-6 h-6 text-paf-gold"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-paf-green mb-1">Address</h3>
+                            <p class="text-paf-green/70">Phidelis Ann Foundation<br>Kakamega County<br>Kenya</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-lg bg-paf-gold/20 flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="mail" class="w-6 h-6 text-paf-gold"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-paf-green mb-1">Email</h3>
+                            <p class="text-paf-green/70">info@phidelisannfoundation.org</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-lg bg-paf-gold/20 flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="phone" class="w-6 h-6 text-paf-gold"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-paf-green mb-1">Phone</h3>
+                            <p class="text-paf-green/70">+254 759 707546</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-lg bg-paf-gold/20 flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="clock" class="w-6 h-6 text-paf-gold"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-paf-green mb-1">Office Hours</h3>
+                            <p class="text-paf-green/70">Monday - Friday: 8:00 AM - 5:00 PM<br>Saturday: 9:00 AM - 1:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Donation CTA -->
+<section class="py-20 bg-paf-gold">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-4xl font-serif font-bold text-paf-green mb-6">Make a Donation</h2>
+        <p class="text-paf-green/80 text-lg mb-8">
+            Your contribution directly supports our programs and helps us reach more children in need. Fill out the contact form to learn how you can donate or partner with us to make a lasting impact.
+        </p>
+    </div>
+</section>
+
+<!-- Volunteer CTA -->
+<section class="py-20 bg-paf-green">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+                <h2 class="text-4xl font-serif font-bold text-white mb-6">Become a Volunteer</h2>
+                <p class="text-white/80 leading-relaxed mb-6">
+                    Join our team of dedicated volunteers and make a direct impact on children's lives. Whether you can help with events, distribution, or mentorship, we have a place for you.
+                </p>
+                <ul class="space-y-3 text-white/70 mb-8">
+                    <li class="flex items-center gap-2">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-paf-gold"></i>
+                        Event coordination and support
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-paf-gold"></i>
+                        School supply distribution
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-paf-gold"></i>
+                        Mentorship programs
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-paf-gold"></i>
+                        Community outreach
+                    </li>
+                </ul>
+                <a href="#" class="inline-flex items-center bg-paf-gold hover:bg-paf-gold/90 text-paf-green font-semibold px-8 py-4 rounded-full transition-all hover:scale-105">
+                    <i data-lucide="users" class="w-5 h-5 mr-2"></i>
+                    Apply to Volunteer
+                </a>
+            </div>
+            <div class="relative">
+                <img src="{% static 'main/images/volunteer_packing.jpg' %}" alt="Volunteers" class="rounded-xl shadow-xl w-full h-96 object-cover">
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Wait for DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get form elements
+        const form = document.getElementById('contact-form');
+        const submitButton = document.getElementById('submit-button');
+        const buttonText = document.getElementById('button-text');
+        const buttonLoader = document.getElementById('button-loader');
+        
+        // Only add submit handler if form exists
+        if (form && submitButton && buttonText && buttonLoader) {
+            // Store original button state
+            let isSubmitting = false;
+            
+            // Handle form submission
+            form.addEventListener('submit', function(e) {
+                // Prevent multiple submissions
+                if (isSubmitting) {
+                    e.preventDefault();
+                    return;
+                }
+                
+                // Set submitting flag
+                isSubmitting = true;
+                
+                // Show loading state
+                buttonText.classList.add('hidden');
+                buttonLoader.classList.remove('hidden');
+                submitButton.disabled = true;
+                submitButton.classList.add('opacity-75', 'cursor-wait');
+            });
+            
+            // Restore button state if there are form errors (page reloads with errors)
+            const hasErrors = document.querySelector('.alert-message');
+            if (hasErrors) {
+                buttonText.classList.remove('hidden');
+                buttonLoader.classList.add('hidden');
+                submitButton.disabled = false;
+                submitButton.classList.remove('opacity-75', 'cursor-wait');
+                isSubmitting = false;
+            }
+        }
+        
+        // Handle messages scrolling
+        const messages = document.querySelectorAll('.alert-message');
+        if (messages.length > 0) {
+            const messagesContainer = document.getElementById('form-messages');
+            if (messagesContainer) {
+                setTimeout(function() {
+                    messagesContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            }
+            
+            // Auto-hide messages after 5 seconds
+            setTimeout(function() {
+                messages.forEach(function(msg) {
+                    msg.style.opacity = '0';
+                    msg.style.transition = 'opacity 0.5s ease';
+                    setTimeout(function() {
+                        msg.style.display = 'none';
+                    }, 500);
+                });
+            }, 5000);
+        }
+        
+        // Re-initialize Lucide icons
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    });
+</script>
+
+<style>
+    /* Button Loading Animation */
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+    
+    .animate-spin {
+        animation: spin 1s linear infinite;
+    }
+    
+    button:disabled {
+        cursor: not-allowed;
+    }
+    
+    #submit-button .hidden {
+        display: none;
+    }
+    
+    .cursor-wait {
+        cursor: wait;
+    }
+    
+    /* Smooth message animation */
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .alert-message {
+        animation: slideDown 0.3s ease-out;
+    }
+    
+    /* Ensure button text is visible */
+    #button-text, #button-loader {
+        transition: all 0.2s ease;
+    }
+</style>
+{% endblock %}

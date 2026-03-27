@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="relative py-32 bg-paf-green">
+    <div class="absolute inset-0 opacity-20">
+        <img src="{% static 'main/images/kakamega_village.jpg' %}" alt="Background" class="w-full h-full object-cover">
+    </div>
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-5xl md:text-6xl font-serif font-bold text-white mb-4">About Us</h1>
+        <p class="text-white/80 text-lg max-w-2xl mx-auto">Learn more about our mission, vision, and the team behind Phidelis Ann Foundation.</p>
+    </div>
+</section>
+
+<!-- Our Story Section -->
+<section class="py-20 bg-paf-cream">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+                <h2 class="text-4xl font-serif font-bold text-paf-green mb-6">Our Story</h2>
+                <div class="space-y-4 text-paf-green/80 leading-relaxed">
+                    <p>
+                        Phidelis Ann Foundation was founded in 2023 with a simple yet powerful belief: every child deserves access to education and the dignity to learn without barriers.
+                    </p>
+                    <p>
+                        Named after our founder, Phidelis Ann who dedicated her life to educating children in her community, PAF continues that legacy of compassion and commitment to education.
+                    </p>
+                    <p>
+                        What started as a small initiative in Kakamega has grown into a movement that has touched the lives of over 200 children across 5 partner schools and 8 communities.
+                    </p>
+                    <p>
+                        Our work focuses on four key areas: Education Access, Girl Child Support, Community Outreach, and Health & Hygiene. Through these programs, we address the root causes that keep children out of school.
+                    </p>
+                </div>
+            </div>
+            <div class="relative">
+                <div class="absolute -inset-4 bg-paf-gold/20 rounded-2xl transform -rotate-3"></div>
+                <img src="{% static 'main/images/teacher_portrait.jpg' %}" alt="Our team" class="relative rounded-xl shadow-xl w-full h-96 object-cover">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Values Section -->
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-4xl font-serif font-bold text-paf-green mb-12 text-center">Our Core Values</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="text-center p-6">
+                <div class="w-16 h-16 rounded-full bg-paf-gold/20 flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="heart" class="w-8 h-8 text-paf-gold"></i>
+                </div>
+                <h3 class="text-xl font-serif font-bold text-paf-green mb-2">Compassion</h3>
+                <p class="text-paf-green/70 text-sm">We lead with empathy and understanding for every child's unique situation.</p>
+            </div>
+            <div class="text-center p-6">
+                <div class="w-16 h-16 rounded-full bg-paf-gold/20 flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="shield-check" class="w-8 h-8 text-paf-gold"></i>
+                </div>
+                <h3 class="text-xl font-serif font-bold text-paf-green mb-2">Integrity</h3>
+                <p class="text-paf-green/70 text-sm">We are transparent and accountable in all our operations and partnerships.</p>
+            </div>
+            <div class="text-center p-6">
+                <div class="w-16 h-16 rounded-full bg-paf-gold/20 flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="users" class="w-8 h-8 text-paf-gold"></i>
+                </div>
+                <h3 class="text-xl font-serif font-bold text-paf-green mb-2">Community</h3>
+                <p class="text-paf-green/70 text-sm">We work hand-in-hand with local communities to create sustainable change.</p>
+            </div>
+            <div class="text-center p-6">
+                <div class="w-16 h-16 rounded-full bg-paf-gold/20 flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="trending-up" class="w-8 h-8 text-paf-gold"></i>
+                </div>
+                <h3 class="text-xl font-serif font-bold text-paf-green mb-2">Impact</h3>
+                <p class="text-paf-green/70 text-sm">We measure success by the lasting positive change in children's lives.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team Section -->
+<section class="py-20 bg-paf-cream">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-4xl font-serif font-bold text-paf-green mb-12 text-center">Our Team</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover-lift">
+                <div class="h-64 bg-paf-green/10 flex items-center justify-center">
+                    <div class="w-24 h-24 rounded-full bg-paf-gold/30 flex items-center justify-center">
+                        <i data-lucide="user" class="w-12 h-12 text-paf-gold"></i>
+                    </div>
+                </div>
+                <div class="p-6 text-center">
+                    <h3 class="text-xl font-serif font-bold text-paf-green">Founder & Director</h3>
+                    <p class="text-paf-gold text-sm mb-3">Leadership</p>
+                    <p class="text-paf-green/70 text-sm">Visionary leader driving the foundation's mission and strategic direction.</p>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover-lift">
+                <div class="h-64 bg-paf-green/10 flex items-center justify-center">
+                    <div class="w-24 h-24 rounded-full bg-paf-gold/30 flex items-center justify-center">
+                        <i data-lucide="user" class="w-12 h-12 text-paf-gold"></i>
+                    </div>
+                </div>
+                <div class="p-6 text-center">
+                    <h3 class="text-xl font-serif font-bold text-paf-green">Programs Manager</h3>
+                    <p class="text-paf-gold text-sm mb-3">Operations</p>
+                    <p class="text-paf-green/70 text-sm">Overseeing program implementation and community partnerships.</p>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover-lift">
+                <div class="h-64 bg-paf-green/10 flex items-center justify-center">
+                    <div class="w-24 h-24 rounded-full bg-paf-gold/30 flex items-center justify-center">
+                        <i data-lucide="user" class="w-12 h-12 text-paf-gold"></i>
+                    </div>
+                </div>
+                <div class="p-6 text-center">
+                    <h3 class="text-xl font-serif font-bold text-paf-green">Community Coordinator</h3>
+                    <p class="text-paf-gold text-sm mb-3">Outreach</p>
+                    <p class="text-paf-green/70 text-sm">Building relationships with schools, families, and local leaders.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Location Section -->
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div class="relative">
+                <img src="{% static 'main/images/kakamega_village.jpg' %}" alt="Kakamega" class="rounded-xl shadow-xl w-full h-96 object-cover">
+            </div>
+            <div>
+                <h2 class="text-4xl font-serif font-bold text-paf-green mb-6">Where We Work</h2>
+                <p class="text-paf-green/80 leading-relaxed mb-6">
+                    Our primary operations are based in Kakamega County, Kenya, where we work closely with local schools, community leaders, and families to identify and support children in need.
+                </p>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="map-pin" class="w-5 h-5 text-paf-gold"></i>
+                        <span class="text-paf-green/80">Kakamega County, Kenya</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="school" class="w-5 h-5 text-paf-gold"></i>
+                        <span class="text-paf-green/80">15 Partner Schools</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="users" class="w-5 h-5 text-paf-gold"></i>
+                        <span class="text-paf-green/80">8 Communities Served</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% if messages %}
+<div class="fixed-top mt-16 px-4" style="z-index: 9999; max-width: 600px; margin: 0 auto; left: 0; right: 0;">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} mb-3 shadow-lg rounded-lg" 
+         role="alert"
+         style="padding: 1rem 1.25rem; border-radius: 12px; 
+                background-color: {% if message.tags == 'success' %}#d4edda{% elif message.tags == 'error' or message.tags == 'danger' %}#f8d7da{% elif message.tags == 'warning' %}#fff3cd{% else %}#d1ecf1{% endif %};
+                color: {% if message.tags == 'success' %}#155724{% elif message.tags == 'error' or message.tags == 'danger' %}#721c24{% elif message.tags == 'warning' %}#856404{% else %}#0c5460{% endif %};
+                border-left: 4px solid {% if message.tags == 'success' %}#28a745{% elif message.tags == 'error' or message.tags == 'danger' %}#dc3545{% elif message.tags == 'warning' %}#ffc107{% else %}#17a2b8{% endif %};
+                font-size: 1rem; font-weight: 500;">
+        <div class="flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <span class="text-xl">
+                    {% if message.tags == 'success' %}✓{% elif message.tags == 'error' or message.tags == 'danger' %}⚠{% elif message.tags == 'warning' %}⚠{% else %}ℹ{% endif %}
+                </span>
+                <span style="color: inherit; font-weight: 500;">{{ message }}</span>
+            </div>
+            <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close" 
+                    style="background: none; border: none; font-size: 1.2rem; cursor: pointer; color: inherit; opacity: 0.7;">
+                &times;
+            </button>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+    // Auto-dismiss messages after 5 seconds
+    setTimeout(function() {
+        var alerts = document.querySelectorAll('.alert');
+        alerts.forEach(function(alert) {
+            alert.style.opacity = '0';
+            alert.style.transition = 'opacity 0.5s ease';
+            setTimeout(function() {
+                alert.style.display = 'none';
+            }, 500);
+        });
+    }, 5000);
+    
+    // Add close button functionality
+    document.querySelectorAll('.btn-close').forEach(function(button) {
+        button.addEventListener('click', function() {
+            var alert = this.closest('.alert');
+            alert.style.opacity = '0';
+            setTimeout(function() {
+                alert.style.display = 'none';
+            }, 500);
+        });
+    });
+</script>
+{% endif %}

@@ -1,0 +1,240 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative min-h-screen flex items-center pt-16">
+    <!-- Background Image with Overlay -->
+    <div class="absolute inset-0 z-0">
+        <img src="{% static 'main/images/girls_mentorship.jpg' %}" alt="Children in classroom" class="w-full h-full object-cover">
+        <div class="absolute inset-0 hero-overlay"></div>
+    </div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <!-- Left Content -->
+            <div class="text-white space-y-8 fade-in">
+                <div class="inline-flex items-center gap-2 px-4 py-2 bg-paf-gold/20 rounded-full border border-paf-gold/30">
+                    <i data-lucide="sparkles" class="w-4 h-4 text-paf-gold"></i>
+                    <span class="text-paf-gold text-sm font-medium">Making a Difference Since 2023</span>
+                </div>
+                
+                <h1 class="text-5xl md:text-6xl lg:text-7xl font-serif font-bold leading-tight">
+                    Empower them today
+                    <span class="block text-paf-gold">for a stronger tomorrow</span>
+                </h1>
+                
+                <p class="text-xl text-white/80 font-light italic">
+                    — Dignity. Education. Community.
+                </p>
+                
+                <div class="flex flex-wrap gap-4">
+                    <a href="{% url 'contact' %}" class="inline-flex items-center bg-paf-gold hover:bg-[#B39855] text-paf-green font-semibold px-8 py-4 rounded-full transition-all hover:scale-105">
+                        <i data-lucide="heart" class="w-5 h-5 mr-2"></i>
+                        BECOME A VOLUNTEER
+                    </a>
+                    <a href="{% url 'about' %}" class="inline-flex items-center border border-white/30 text-white hover:bg-white/10 px-8 py-4 rounded-full transition-all">
+                        Learn More
+                        <i data-lucide="chevron-right" class="w-5 h-5 ml-2"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Content - Mission Card -->
+            <div class="lg:justify-self-end slide-up" style="animation-delay: 0.2s;">
+                <div class="bg-paf-green/90 backdrop-blur-sm border border-paf-gold/30 shadow-2xl rounded-lg max-w-md p-8">
+                    <h3 class="text-paf-gold text-xl font-serif font-semibold mb-6 pb-4 border-b border-paf-gold/30">
+                        OUR CORE MISSION
+                    </h3>
+                    <div class="space-y-5">
+                        {% for item in mission_items %}
+                        <div class="flex gap-4 group">
+                            <div class="w-10 h-10 rounded-lg bg-paf-gold/20 flex items-center justify-center flex-shrink-0 group-hover:bg-paf-gold/30 transition-colors">
+                                <i data-lucide="{{ item.icon }}" class="w-5 h-5 text-paf-gold"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-semibold text-sm">{{ item.title }}</h4>
+                                <p class="text-white/70 text-xs mt-1 leading-relaxed">{{ item.description }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce">
+        <div class="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center pt-2">
+            <div class="w-1.5 h-3 bg-white/50 rounded-full"></div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section id="stats-section" class="py-16 bg-paf-green">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-3 gap-8 text-center">
+            <div class="space-y-2">
+                <div class="text-4xl md:text-5xl font-serif font-bold text-paf-gold">
+                    <span class="counter" data-target="{{ stats.children }}">0</span>+
+                </div>
+                <div class="text-white/70 text-sm uppercase tracking-wider">Children Supported</div>
+            </div>
+            <div class="space-y-2">
+                <div class="text-4xl md:text-5xl font-serif font-bold text-paf-gold">
+                    <span class="counter" data-target="{{ stats.schools }}">0</span>+
+                </div>
+                <div class="text-white/70 text-sm uppercase tracking-wider">Partner Schools</div>
+            </div>
+            <div class="space-y-2">
+                <div class="text-4xl md:text-5xl font-serif font-bold text-paf-gold">
+                    <span class="counter" data-target="{{ stats.communities }}">0</span>+
+                </div>
+                <div class="text-white/70 text-sm uppercase tracking-wider">Communities Reached</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="py-20 bg-paf-cream">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- About Header -->
+        <div class="grid lg:grid-cols-2 gap-12 items-center mb-20">
+            <div class="fade-in">
+                <h2 class="text-4xl md:text-5xl font-serif font-bold text-paf-green mb-6">About Us</h2>
+                <p class="text-paf-green/80 text-lg leading-relaxed">
+                    Phidelis Ann Foundation (PAF) is a community-driven organization committed to improving access to education and restoring dignity among learners in underserved communities across Kenya. We believe that every child deserves a fair chance to learn, grow, and achieve their full potential—regardless of their background.
+                </p>
+                <a href="{% url 'about' %}" class="inline-flex items-center text-paf-gold hover:text-paf-green font-semibold mt-6 transition-colors">
+                    Read Our Story
+                    <i data-lucide="arrow-right" class="w-5 h-5 ml-2"></i>
+                </a>
+            </div>
+            <div class="relative">
+                <div class="absolute -inset-4 bg-paf-gold/20 rounded-2xl transform rotate-3"></div>
+                <img src="{% static 'main/images/girl_child_education.jpg' %}" alt="Girl child education" class="relative rounded-xl shadow-xl w-full h-80 object-cover">
+            </div>
+        </div>
+
+        <!-- Mission & Vision Cards -->
+        <div class="grid md:grid-cols-2 gap-8 mb-16">
+            <div class="bg-white border-l-4 border-l-paf-gold shadow-lg hover:shadow-xl transition-shadow rounded-r-lg p-8">
+                <h3 class="text-2xl font-serif font-bold text-paf-green mb-4">Our Mission</h3>
+                <p class="text-paf-green/70 leading-relaxed">
+                    To empower children and youth by providing essential educational and personal support, enabling them to stay in school, learn effectively, and thrive with dignity.
+                </p>
+            </div>
+            <div class="bg-white border-l-4 border-l-paf-green shadow-lg hover:shadow-xl transition-shadow rounded-r-lg p-8">
+                <h3 class="text-2xl font-serif font-bold text-paf-green mb-4">Our Vision</h3>
+                <p class="text-paf-green/70 leading-relaxed">
+                    A society where no child is held back from education due to lack of basic needs, and where every learner is equipped with the tools and confidence to build a brighter future.
+                </p>
+            </div>
+        </div>
+
+        <!-- Why Our Work Matters -->
+        <div class="bg-paf-beige rounded-lg shadow-lg p-8 md:p-12">
+            <h3 class="text-2xl font-serif font-bold text-paf-green mb-4">Why Our Work Matters</h3>
+            <p class="text-paf-green/70 leading-relaxed">
+                In many parts of Kenya, students miss school not because they lack ability, but because they lack basic necessities. Something as simple as a school uniform or sanitary pad can determine whether a child attends class or stays at home. At Phidelis Ann Foundation, we are committed to closing this gap—one child, one school, and one community at a time.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Our Approach Section -->
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-4xl md:text-5xl font-serif font-bold text-paf-green mb-12 text-center">Our Approach</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+            {% for item in approach_items %}
+            <div class="group hover:shadow-xl transition-all duration-300 border border-paf-beige rounded-lg p-8 hover-lift">
+                <div class="w-14 h-14 rounded-xl bg-paf-green/10 flex items-center justify-center mb-6 group-hover:bg-paf-green transition-colors">
+                    <i data-lucide="{{ item.icon }}" class="w-7 h-7 text-paf-green group-hover:text-paf-gold transition-colors"></i>
+                </div>
+                <h3 class="text-xl font-serif font-bold text-paf-green mb-3">{{ item.title }}</h3>
+                <p class="text-paf-green/70 leading-relaxed text-sm">{{ item.description }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Impact Gallery Section -->
+<section class="py-20 bg-paf-cream">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-serif font-bold text-paf-green mb-4">Our Impact in Action</h2>
+            <p class="text-paf-green/70 max-w-2xl mx-auto">
+                See how your support is transforming lives and creating brighter futures for children across Kenya.
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            {% for image in gallery_images %}
+            <div class="group relative overflow-hidden rounded-2xl shadow-xl img-zoom">
+                <img src="{% static image.src %}" alt="{{ image.title }}" class="w-full h-80 object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-paf-green/90 to-transparent"></div>
+                <div class="absolute bottom-0 left-0 right-0 p-6">
+                    <h3 class="text-white font-serif text-xl font-bold mb-2">{{ image.title }}</h3>
+                    <p class="text-white/80 text-sm">{{ image.description }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mt-12">
+            <a href="{% url 'gallery' %}" class="inline-flex items-center bg-paf-green hover:bg-paf-green/90 text-white font-semibold px-8 py-4 rounded-full transition-all hover:scale-105">
+                View Full Gallery
+                <i data-lucide="images" class="w-5 h-5 ml-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonial Section -->
+<section class="py-20 bg-paf-green">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <i data-lucide="quote" class="w-12 h-12 text-paf-gold mx-auto mb-8"></i>
+        <blockquote class="text-2xl md:text-3xl font-serif text-white leading-relaxed mb-8">
+            "Thanks to Phidelis Ann Foundation, I can now attend school every day with confidence. The sanitary pads and mentorship program have changed my life."
+        </blockquote>
+        <div class="flex items-center justify-center gap-4">
+            <div class="w-12 h-12 rounded-full bg-paf-gold/30 flex items-center justify-center">
+                <span class="text-paf-gold font-serif font-bold">SM</span>
+            </div>
+            <div class="text-left">
+                <div class="text-white font-semibold">Sarah M.</div>
+                <div class="text-white/60 text-sm">Student, Kakamega County</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-20 bg-paf-gold">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-4xl md:text-5xl font-serif font-bold text-paf-green mb-6">
+            Join Us in Making a Difference
+        </h2>
+        <p class="text-paf-green/80 text-lg mb-8 max-w-2xl mx-auto">
+            Your support can help us reach more children and create lasting change in communities across Kenya.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+            <a href="{% url 'contact' %}" class="inline-flex items-center bg-paf-green hover:bg-paf-green/90 text-white font-semibold px-8 py-4 rounded-full transition-all hover:scale-105">
+                <i data-lucide="heart" class="w-5 h-5 mr-2"></i>
+                Donate Now
+            </a>
+            <a href="{% url 'contact' %}" class="inline-flex items-center border-2 border-paf-green text-paf-green hover:bg-paf-green hover:text-white px-8 py-4 rounded-full transition-all">
+                <i data-lucide="users" class="w-5 h-5 mr-2"></i>
+                Become a Volunteer
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

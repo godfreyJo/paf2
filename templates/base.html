@@ -1,0 +1,452 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Phidelis Ann Foundation{% endblock %}</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Bootstrap JS (for alerts) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --paf-green: #1a3b2f;
+            --paf-gold: #c8a45b;
+            --paf-beige: #ebe5d8;
+            --paf-cream: #fef9ef;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .hero-overlay {
+            background: linear-gradient(135deg, rgba(26, 59, 47, 0.85) 0%, rgba(26, 59, 47, 0.75) 100%);
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        .slide-up {
+            animation: slideUp 0.6s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-4px);
+        }
+        
+        .img-zoom:hover img {
+            transform: scale(1.05);
+        }
+        
+        .img-zoom img {
+            transition: transform 0.5s ease;
+        }
+        
+        .counter {
+            transition: all 0.5s ease;
+        }
+        
+        /* Form styles */
+        input, textarea, select {
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(200, 164, 91, 0.2);
+        }
+        
+        /* Alert styles */
+        .alert {
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .btn-close:hover {
+            opacity: 0.7;
+        }
+    </style>
+    
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'paf-green': '#1A3D2E',
+                        'paf-gold': '#C4A962',
+                        'paf-cream': '#F5F1E8',
+                        'paf-beige': '#E8E0D0',
+                    },
+                    fontFamily: {
+                        'serif': ['Cormorant Garamond', 'serif'],
+                        'sans': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #E8E0D0;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #1A3D2E;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2d5a45;
+        }
+        
+        /* Animation classes */
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .slide-up {
+            animation: slideUp 0.6s ease-out forwards;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Counter animation */
+        .counter {
+            font-variant-numeric: tabular-nums;
+        }
+        
+        /* Hover card effect */
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(26, 61, 46, 0.15);
+        }
+        
+        /* Image zoom effect */
+        .img-zoom {
+            overflow: hidden;
+        }
+        
+        .img-zoom img {
+            transition: transform 0.5s ease;
+        }
+        
+        .img-zoom:hover img {
+            transform: scale(1.05);
+        }
+        
+        /* Gradient overlay for hero */
+        .hero-overlay {
+            background: linear-gradient(to right, rgba(26, 61, 46, 0.95), rgba(26, 61, 46, 0.8), rgba(26, 61, 46, 0.4));
+        }
+        
+        /* Mobile menu */
+        .mobile-menu {
+            display: none;
+        }
+        
+        .mobile-menu.active {
+            display: block;
+        }
+        /* Message Alert Styles */
+    .alert {
+    animation: slideDown 0.3s ease-out;
+}
+
+    @keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+    .alert .btn-close:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+/* Button Loading Animation */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+button:disabled {
+    cursor: not-allowed;
+}
+
+/* Smooth transition for button */
+#submit-button {
+    transition: all 0.3s ease;
+}
+
+#submit-button .hidden {
+    display: none;
+}
+
+#submit-button .flex {
+    display: flex;
+}
+/* Prevent double submission */
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Loading animation keyframes */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+/* Smooth transitions */
+#submit-button {
+    transition: all 0.3s ease;
+}
+
+#submit-button .hidden {
+    display: none;
+}
+
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="font-sans bg-paf-cream text-gray-800">
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-paf-green">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <a href="{% url 'home' %}" class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-full bg-paf-gold flex items-center justify-center">
+                        <img src="{% static 'main/images/logo.svg' %}" width="60">
+                    </div>
+                    <div>
+                        <span class="text-white font-serif text-lg font-semibold">Phidelis Ann Foundation</span>
+                        <span class="hidden sm:block text-paf-gold text-xs tracking-wider">EMPOWER THEM TODAY</span>
+                    </div>
+                </a>
+                
+                <!-- Desktop Nav -->
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="{% url 'home' %}" class="text-white/90 hover:text-paf-gold text-sm font-medium tracking-wide transition-colors">HOME</a>
+                    <a href="{% url 'about' %}" class="text-white/90 hover:text-paf-gold text-sm font-medium tracking-wide transition-colors">ABOUT US</a>
+                    <a href="{% url 'programs' %}" class="text-white/90 hover:text-paf-gold text-sm font-medium tracking-wide transition-colors">PROGRAMS</a>
+                    <a href="{% url 'gallery' %}" class="text-white/90 hover:text-paf-gold text-sm font-medium tracking-wide transition-colors">GALLERY</a>
+                    <a href="{% url 'contact' %}" class="text-white/90 hover:text-paf-gold text-sm font-medium tracking-wide transition-colors">CONTACT US</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden text-white">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="mobile-menu md:hidden bg-paf-green border-t border-white/10">
+            <a href="{% url 'home' %}" class="block px-4 py-3 text-white/90 hover:text-paf-gold hover:bg-white/5 transition-colors">Home</a>
+            <a href="{% url 'about' %}" class="block px-4 py-3 text-white/90 hover:text-paf-gold hover:bg-white/5 transition-colors">About Us</a>
+            <a href="{% url 'programs' %}" class="block px-4 py-3 text-white/90 hover:text-paf-gold hover:bg-white/5 transition-colors">Programs</a>
+            <a href="{% url 'gallery' %}" class="block px-4 py-3 text-white/90 hover:text-paf-gold hover:bg-white/5 transition-colors">Gallery</a>
+            <a href="{% url 'contact' %}" class="block px-4 py-3 text-white/90 hover:text-paf-gold hover:bg-white/5 transition-colors">Contact Us</a>
+        </div>
+    </nav>
+    <!-- {% include 'includes/messages.html' %} -->
+    <!-- Main Content -->
+    <main>
+       
+        {% block content %}{% endblock %}
+        
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-paf-green text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-12">
+                <div class="md:col-span-2">
+                    <div class="flex items-center gap-2 mb-6">
+                        <div class="w-10 h-10 rounded-full bg-paf-gold flex items-center justify-center">
+                            <img src="{% static 'main/images/logo.svg' %}" width="60">
+                        </div>
+                        <span class="text-white font-serif text-xl font-semibold">Phidelis Ann Foundation</span>
+                    </div>
+                    <p class="text-white/70 leading-relaxed max-w-md">
+                        Empowering children and youth through education, dignity, and community support. Together, we can build a brighter future for every child in Kenya.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="text-paf-gold font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-3">
+                        <li><a href="{% url 'home' %}" class="text-white/70 hover:text-paf-gold transition-colors">Home</a></li>
+                        <li><a href="{% url 'about' %}" class="text-white/70 hover:text-paf-gold transition-colors">About Us</a></li>
+                        <li><a href="{% url 'programs' %}" class="text-white/70 hover:text-paf-gold transition-colors">Programs</a></li>
+                        <li><a href="{% url 'gallery' %}" class="text-white/70 hover:text-paf-gold transition-colors">Gallery</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-paf-gold font-semibold mb-4">Contact</h4>
+                    <ul class="space-y-3 text-white/70">
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="map-pin" class="w-4 h-4"></i>
+                            Kakamega, Kenya
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="mail" class="w-4 h-4"></i>
+                            info@phidelisannfoundation.org
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="phone" class="w-4 h-4"></i>
+                            +254 700 000 000
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/10 mt-12 pt-8 text-center text-white/50 text-sm">
+                © {% now "Y" %} Phidelis Ann Foundation. All rights reserved. Empower Them Today.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+        });
+        
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-lg');
+            } else {
+                navbar.classList.remove('shadow-lg');
+            }
+        });
+        
+        // Counter animation
+        function animateCounter(element, target, duration = 2000) {
+            let start = 0;
+            const increment = target / (duration / 16);
+            
+            function updateCounter() {
+                start += increment;
+                if (start < target) {
+                    element.textContent = Math.floor(start).toLocaleString();
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    element.textContent = target.toLocaleString();
+                }
+            }
+            
+            updateCounter();
+        }
+        
+        // Intersection Observer for counter animation
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counters = entry.target.querySelectorAll('.counter');
+                    counters.forEach(counter => {
+                        const target = parseInt(counter.dataset.target);
+                        animateCounter(counter, target);
+                    });
+                    counterObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        const statsSection = document.getElementById('stats-section');
+        if (statsSection) {
+            counterObserver.observe(statsSection);
+        }
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

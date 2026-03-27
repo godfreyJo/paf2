@@ -1,0 +1,270 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="relative py-32 bg-paf-green">
+    <div class="absolute inset-0 opacity-20">
+        <img src="{% static 'main/images/children_studying_together.jpg' %}" alt="Background" class="w-full h-full object-cover">
+    </div>
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-5xl md:text-6xl font-serif font-bold text-white mb-4">Our Programs</h1>
+        <p class="text-white/80 text-lg max-w-2xl mx-auto">Discover how we're making a difference through our targeted initiatives.</p>
+    </div>
+</section>
+
+<!-- SECTION 1: PROGRAMS GRID -->
+<section class="py-20 bg-paf-cream">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-2 gap-8">
+            {% for program in programs %}
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover-lift">
+                <div class="h-64 img-zoom">
+                    <img src="{% static program.image %}" alt="{{ program.title }}" class="w-full h-full object-cover">
+                </div>
+                <div class="p-8">
+                    <h3 class="text-2xl font-serif font-bold text-paf-green mb-3">{{ program.title }}</h3>
+                    <p class="text-paf-green/70 leading-relaxed mb-6">{{ program.description }}</p>
+                    <a href="{% url 'contact' %}" class="inline-flex items-center text-paf-gold hover:text-paf-green font-semibold transition-colors">
+                        Get Involved
+                        <i data-lucide="arrow-right" class="w-5 h-5 ml-2"></i>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- SECTION 2: UPCOMING EVENTS (Separate Section) -->
+{% if upcoming_events %}
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-paf-gold/10 rounded-full mb-4">
+                <i data-lucide="calendar" class="w-5 h-5 text-paf-gold"></i>
+                <span class="text-paf-gold text-sm font-medium">Join Us</span>
+            </div>
+            <h2 class="text-4xl font-serif font-bold text-paf-green mb-4">Upcoming Events</h2>
+            <p class="text-paf-green/70 max-w-2xl mx-auto">Be part of our upcoming outreach events and make a difference in the community.</p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for event in upcoming_events %}
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-paf-beige">
+                <div class="relative h-48 bg-gradient-to-r from-paf-green/5 to-paf-gold/5">
+                    {% if event.image and event.image.url %}
+                    <img src="{{ event.image.url }}" alt="{{ event.title }}" class="w-full h-full object-cover">
+                    {% else %}
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <i data-lucide="calendar-heart" class="w-16 h-16 text-paf-gold/30"></i>
+                    </div>
+                    {% endif %}
+                    <!-- Date Badge Overlay -->
+                    <div class="absolute top-4 left-4 bg-paf-green/90 backdrop-blur-sm rounded-lg px-3 py-2 text-center min-w-[70px] shadow-lg">
+                        <div class="text-white font-bold text-2xl leading-none">{{ event.date|date:"d" }}</div>
+                        <div class="text-paf-gold text-xs uppercase tracking-wider">{{ event.date|date:"M" }}</div>
+                    </div>
+                </div>
+                
+                <div class="p-6">
+                    <h3 class="text-xl font-serif font-bold text-paf-green mb-2">{{ event.title }}</h3>
+                    
+                    <div class="flex items-start gap-2 text-paf-green/70 text-sm mb-2">
+                        <i data-lucide="map-pin" class="w-4 h-4 mt-0.5 flex-shrink-0"></i>
+                        <span>{{ event.venue }}</span>
+                    </div>
+                    
+                    <div class="flex items-start gap-2 text-paf-green/70 text-sm mb-4">
+                        <i data-lucide="clock" class="w-4 h-4 mt-0.5 flex-shrink-0"></i>
+                        <span>{{ event.formatted_time }}</span>
+                    </div>
+                    
+                    {% if event.description %}
+                    <p class="text-paf-green/60 text-sm mb-5 line-clamp-2">{{ event.description }}</p>
+                    {% endif %}
+                    
+                    <a href="{% url 'contact' %}?subject=volunteer&event={{ event.title|urlencode }}" 
+                       class="inline-flex items-center justify-center w-full bg-paf-green hover:bg-paf-green/90 text-white font-semibold py-2.5 rounded-lg transition-all duration-300 group">
+                        <span>RSVP to Attend</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- SECTION 3: HOW OUR PROGRAMS WORK -->
+<section class="py-20 bg-paf-cream">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-4xl font-serif font-bold text-paf-green mb-12 text-center">How Our Programs Work</h2>
+        
+        <!-- Education Access -->
+        <div class="grid lg:grid-cols-2 gap-12 items-center mb-16">
+            <div class="order-2 lg:order-1">
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-paf-gold/20 rounded-full mb-4">
+                    <i data-lucide="book-open" class="w-4 h-4 text-paf-gold"></i>
+                    <span class="text-paf-gold text-sm font-medium">Education</span>
+                </div>
+                <h3 class="text-3xl font-serif font-bold text-paf-green mb-4">Education Access Program</h3>
+                <p class="text-paf-green/80 leading-relaxed mb-4">
+                    We provide essential learning materials including textbooks, notebooks, pencils, and school uniforms to children who would otherwise miss school due to lack of supplies.
+                </p>
+                <ul class="space-y-2 text-paf-green/70">
+                    <li class="flex items-center gap-2">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-paf-gold"></i>
+                        Textbook distribution to partner schools
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-paf-gold"></i>
+                        Stationery kits for every student
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-paf-gold"></i>
+                        School uniform assistance
+                    </li>
+                </ul>
+            </div>
+            <div class="order-1 lg:order-2">
+                <img src="{% static 'main/images/school_supplies.jpg' %}" alt="School supplies" class="rounded-xl shadow-xl w-full h-80 object-cover">
+            </div>
+        </div>
+        
+        <!-- Girl Child Support -->
+        <div class="grid lg:grid-cols-2 gap-12 items-center mb-16">
+            <div>
+                <img src="{% static 'main/images/girls_mentorship.jpg' %}" alt="Girls mentorship" class="rounded-xl shadow-xl w-full h-80 object-cover">
+            </div>
+            <div>
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-paf-gold/20 rounded-full mb-4">
+                    <i data-lucide="heart" class="w-4 h-4 text-paf-gold"></i>
+                    <span class="text-paf-gold text-sm font-medium">Empowerment</span>
+                </div>
+                <h3 class="text-3xl font-serif font-bold text-paf-green mb-4">Girl Child Support</h3>
+                <p class="text-paf-green/80 leading-relaxed mb-4">
+                    Our girl child program addresses the unique challenges that prevent girls from attending school, providing sanitary products, mentorship, and a supportive community.
+                </p>
+                <ul class="space-y-2 text-paf-green/70">
+                    <li class="flex items-center gap-2">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-paf-gold"></i>
+                        Monthly sanitary pad distribution
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-paf-gold"></i>
+                        Female mentorship programs
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-paf-gold"></i>
+                        Life skills workshops
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Health & Hygiene -->
+        <div class="grid lg:grid-cols-2 gap-12 items-center mb-16">
+            <div class="order-2 lg:order-1">
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-paf-gold/20 rounded-full mb-4">
+                    <i data-lucide="sparkles" class="w-4 h-4 text-paf-gold"></i>
+                    <span class="text-paf-gold text-sm font-medium">Health</span>
+                </div>
+                <h3 class="text-3xl font-serif font-bold text-paf-green mb-4">Health & Hygiene</h3>
+                <p class="text-paf-green/80 leading-relaxed mb-4">
+                    Good health is essential for learning. Our hygiene program teaches proper hygiene practices and provides personal care essentials to keep children healthy and in school.
+                </p>
+                <ul class="space-y-2 text-paf-green/70">
+                    <li class="flex items-center gap-2">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-paf-gold"></i>
+                        Hygiene education workshops
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-paf-gold"></i>
+                        Personal care essentials distribution
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-paf-gold"></i>
+                        Undergarment support
+                    </li>
+                </ul>
+            </div>
+            <div class="order-1 lg:order-2">
+                <img src="{% static 'main/images/hygiene_education.jpg' %}" alt="Hygiene education" class="rounded-xl shadow-xl w-full h-80 object-cover">
+            </div>
+        </div>
+        
+        <!-- Community Outreach -->
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+                <img src="{% static 'main/images/uniform_distribution.jpg' %}" alt="Community outreach" class="rounded-xl shadow-xl w-full h-80 object-cover">
+            </div>
+            <div>
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-paf-gold/20 rounded-full mb-4">
+                    <i data-lucide="users" class="w-4 h-4 text-paf-gold"></i>
+                    <span class="text-paf-gold text-sm font-medium">Community</span>
+                </div>
+                <h3 class="text-3xl font-serif font-bold text-paf-green mb-4">Community Outreach</h3>
+                <p class="text-paf-green/80 leading-relaxed mb-4">
+                    We believe in working together with communities. Our outreach programs engage local leaders, schools, and families to create sustainable change.
+                </p>
+                <ul class="space-y-2 text-paf-green/70">
+                    <li class="flex items-center gap-2">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-paf-gold"></i>
+                        Community events and workshops
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-paf-gold"></i>
+                        Volunteer drives
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-paf-gold"></i>
+                        Local partnerships in Kakamega
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION 4: IMPACT STATS -->
+<section class="py-20 bg-paf-green">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-4 gap-8 text-center">
+            <div>
+                <div class="text-4xl font-serif font-bold text-paf-gold mb-2">200+</div>
+                <div class="text-white/70">Children Supported</div>
+            </div>
+            <div>
+                <div class="text-4xl font-serif font-bold text-paf-gold mb-2">5+</div>
+                <div class="text-white/70">Partner Schools</div>
+            </div>
+            <div>
+                <div class="text-4xl font-serif font-bold text-paf-gold mb-2">8+</div>
+                <div class="text-white/70">Communities</div>
+            </div>
+            <div>
+                <div class="text-4xl font-serif font-bold text-paf-gold mb-2">50+</div>
+                <div class="text-white/70">Active Volunteers</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION 5: CTA SECTION -->
+<section class="py-20 bg-paf-gold">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-4xl font-serif font-bold text-paf-green mb-6">Support Our Programs</h2>
+        <p class="text-paf-green/80 text-lg mb-8">
+            Your contribution helps us continue and expand our programs to reach more children in need.
+        </p>
+        <a href="{% url 'contact' %}" class="inline-flex items-center bg-paf-green hover:bg-paf-green/90 text-white font-semibold px-8 py-4 rounded-full transition-all hover:scale-105">
+            <i data-lucide="heart" class="w-5 h-5 mr-2"></i>
+            Donate Now
+        </a>
+    </div>
+</section>
+{% endblock %}
